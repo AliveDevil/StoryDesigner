@@ -1,0 +1,88 @@
+﻿<!-- Copyright: Ashley Davis (http://www.codeproject.com/Articles/182683/NetworkView-A-WPF-custom-control-for-visualizing-a) -->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:StoryDesigner"
+    xmlns:network="clr-namespace:StoryDesigner.Network">
+    <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+    <SolidColorBrush
+        x:Key="nodeBorderBrush"
+        Color="Black" />
+    <LinearGradientBrush
+        x:Key="nodeFillBrush"
+        EndPoint="0,1"
+        StartPoint="0,0">
+        <GradientStop
+            Color="White"
+            Offset="0" />
+        <GradientStop
+            Color="#7FC9FF"
+            Offset="0.6" />
+    </LinearGradientBrush>
+    <SolidColorBrush
+        x:Key="connectionBrush"
+        Color="Black" />
+    <SolidColorBrush
+        x:Key="connectorBackgroundBrush"
+        Color="White" />
+    <Style TargetType="{x:Type network:NodeItem}">
+        <Setter
+            Property="X"
+            Value="{Binding X}" />
+        <Setter
+            Property="Y"
+            Value="{Binding Y}" />
+        <Setter
+            Property="ZIndex"
+            Value="{Binding ZIndex}" />
+        <Setter
+            Property="IsSelected"
+            Value="{Binding IsSelected}" />
+    </Style>
+    <DataTemplate x:Key="inputConnectorTemplate">
+        <network:ConnectorItem
+            Height="15"
+            Width="15"
+            DragEnabled="False" />
+    </DataTemplate>
+    <DataTemplate x:Key="outputConnectorTemplate">
+        <Grid
+            Margin="0,2,0,0"
+            HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem
+                        Command="{Binding DeleteConditionCommand}"
+                        Header="Delete Condition" />
+                </ContextMenu>
+            </Grid.ContextMenu>
+            <local:EditableTextBlock
+                Grid.Column="0"
+                Margin="5,0"
+                VerticalAlignment="Center"
+                Text="{Binding Name}"
+                TextBlockForegroundColor="Black"
+                TextBoxForegroundColor="Black" />
+
+            <Grid
+                Grid.Column="1"
+                Height="15"
+                Width="15"
+                Cursor="Hand">
+                <network:ConnectorItem DragEnabled="True" />
+                <Ellipse
+                    Margin="3"
+                    Fill="{StaticResource connectionBrush}"
+                    IsHitTestVisible="False"
+                    Visibility="{Binding
+                        IsConnectionAttached,
+                        Converter={StaticResource booleanToVisibilityConverter}}" />
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>
